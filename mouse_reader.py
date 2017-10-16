@@ -1,4 +1,6 @@
+from __future__ import division
 from collections import deque
+from decimal import Decimal
 import pyautogui, sys
 
 if len(sys.argv) != 3:
@@ -22,8 +24,6 @@ mon_size = pyautogui.size()
 monitor1 = 0
 monitor2 = 0
 
-points_dict = {}
-
 for line in reader:
 	x, y = [int(x) for x in line.split()]
 	if x < mon_size[0]:
@@ -34,17 +34,16 @@ for line in reader:
 	else:
 		monitor2 += 1
 
-print monitor_split
-
 if monitor1 > 0:
 	for x in range(mon_x_div):
 		y_values = ''
 		for y in range(mon_y_div):
-			y_per = monitor_split[y][x] / monitor1
+			y_per = monitor_split[y][x] / monitor1 * 100
 			if y_per == 1:
 				y_per = 100
-			y_per = str(y_per) + '%'
+			y_per = str(round(y_per,2)) + '%  '
 	   		y_values += y_per.rjust(4)
 	   	print y_values
+	print "number of eronious points ", monitor2
 else:
 	print "movements.txt has no points in it"
